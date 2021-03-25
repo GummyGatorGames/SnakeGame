@@ -97,11 +97,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75fb2d4853d603f46a5dcd87bca03173, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodySegment: {fileID: 4531366510515299317, guid: 83cc5e536ee039e458ecc67a72562f66,
+  MaxSwipetime: 0
+  MinSwipeDistance: 0
+  BodySegment: {fileID: 4531366510515299317, guid: 83cc5e536ee039e458ecc67a72562f66,
     type: 3}
-  maxSwipetime: 0.5
-  minSwipeDistance: 50
-  tailSPR: {fileID: 21300000, guid: ab591ffc0fe35474e84a96fd8e6d5723, type: 3}
+  TailSPR: {fileID: 21300000, guid: ab591ffc0fe35474e84a96fd8e6d5723, type: 3}
 --- !u!61 &2160758880656922795
 BoxCollider2D:
   m_ObjectHideFlags: 0

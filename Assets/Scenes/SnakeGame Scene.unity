@@ -166,11 +166,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f071516e7b1fb8644918d279a83675aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  snakeHead: {fileID: 6621192292189539048, guid: 95ad11ded77464347bfbb2f46210b8c4,
+  SnakeHead: {fileID: 6621192292189539048, guid: 95ad11ded77464347bfbb2f46210b8c4,
     type: 3}
-  minStepTime: 0
-  MaxStepTime: 0
-  StepTimeAdder: 0
 --- !u!1 &1404944738
 GameObject:
   m_ObjectHideFlags: 0
