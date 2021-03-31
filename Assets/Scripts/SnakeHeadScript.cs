@@ -5,272 +5,237 @@ using UnityEngine;
 
 public class SnakeHeadScript : MonoBehaviour
 {
-    public GameObject bodySegment;
-    private Vector2Int gridPosition;
-    private float MoveTimer;
-    private float MoveTimerMax;
-    private Vector2Int MoveDirection;
-    private bool CanMove;
-    private bool Alive = true;
-    private int snakeBodySize;
-    private List<Vector2Int> snakeMovePositionList;
-    private List<Quaternion> snakeMoveRotList;
-    private List<GameObject> bodySegList;
+    Vector2Int gridPosition;
+    float moveTimer;
+    float moveTimerMax;
+    Vector2Int moveDirection;
+    bool canMove;
+    bool isAlive = true;
+    int snakeBodySize;
+    List<Vector2Int> snakeMovePositionList;
+    List<Quaternion> snakeMoveRotList;
+    List<GameObject> bodySegList;
+    float swipeStartTime;
+    float swipeEndTime;
+    float swipeTime;
+    float swipeLength;
+    Vector2 startSwipePosition;
+    Vector2 endSwipePosition;
+    int score = 0;
 
-    public float maxSwipetime;
-    public float minSwipeDistance;
-
-    private float swipeStartTime;
-    private float swipeEndTime;
-    private float swipeTime;
-    private float swipeLength;
-
-    private Vector2 startSwipePosition;
-    private Vector2 endSwipePosition;
-
-    public Sprite tailSPR;
-    private int score = 0;
+    public float MaxSwipetime;
+    public float MinSwipeDistance;
+    public GameObject BodySegment;
+    public Sprite TailSPR;
 
 
-    private void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Body" && Alive)
+        if (other.tag == "Body" && isAlive)
         {
-            Alive = false;
-            Debug.Log("GridPosi:" + gridPosition);
-            Debug.Log("MoveDirection:" + MoveDirection);
-            gridPosition -= MoveDirection;
+            isAlive = false;
+            Debug.Log($"GridPosi: {gridPosition}, MoveDirection: {moveDirection}");
+            gridPosition -= moveDirection;
             transform.position = new Vector3(gridPosition.x + .5f, gridPosition.y + .5f);
             Debug.Log("Head has been bonked by body");
-
-
         }
+
         if (other.tag == "ObjectiveFood")
         {
             Destroy(other.gameObject);
             score++;
             snakeBodySize++;
             Debug.Log("Score is: " + score);
-
-
-            
-            //Vector2Int snakeMovePosition = snakeMovePositionList[0];
-            //bodySegList.Add(GameObject.Instantiate(bodySegment, new Vector3(snakeMovePosition.x + .5f, snakeMovePosition.y + .5f, 0), snakeMoveRotList[0]));
-            
-
         }
-        if (other.tag == "Wall" && Alive)
+
+        if (other.tag == "Wall" && isAlive)
         {
-            Alive = false;
-            Debug.Log("GridPosi:" + gridPosition);
-            Debug.Log("MoveDirection:" + MoveDirection);
-            gridPosition -= MoveDirection;
+            isAlive = false;
+            Debug.Log($"GridPosi: {gridPosition}, MoveDirection: {moveDirection}");
+            gridPosition -= moveDirection;
             transform.position = new Vector3(gridPosition.x + .5f, gridPosition.y + .5f);
             Debug.Log("Head has been bonked by a wall");
-
-
         }
     }
-
     
-
-
     // Start is called before the first frame update
-    private void Awake()
+    void Awake()
     {
         snakeBodySize = 3;
         snakeMovePositionList = new List<Vector2Int>();
         snakeMoveRotList = new List<Quaternion>();
         bodySegList = new List<GameObject>();
         gridPosition = new Vector2Int(19, 9);
-        MoveTimerMax = .2f;
-        MoveTimer = MoveTimerMax;
-        MoveDirection = new Vector2Int(-1, 0);  
-
+        moveTimerMax = .2f;
+        moveTimer = moveTimerMax;
+        moveDirection = new Vector2Int(-1, 0);
     }
 
     // Update is called once per frame
     void Update()
     {
         SwipeTest();
-        if (Alive)
+
+        if (!isAlive)
         {
-            if (CanMove)
-            {
-                Control();
-            }
-            Movement();
+            return;
         }
+
+        if (canMove)
+        {
+            Control();
+        }
+        Movement();
     }
 
-    private void Movement()
+    void Movement()
     {
-        MoveTimer += Time.deltaTime;
+        moveTimer += Time.deltaTime;
 
-        if (MoveTimer >= MoveTimerMax)
+        if (moveTimer < moveTimerMax)
         {
-            MoveTimer -= MoveTimerMax;
-            snakeMovePositionList.Insert(0,gridPosition);
-            snakeMoveRotList.Insert(0, transform.rotation);
-            gridPosition += MoveDirection;
-            if(bodySegList.Count < snakeBodySize)
+            return;
+        }
+
+        moveTimer -= moveTimerMax;
+        snakeMovePositionList.Insert(0, gridPosition);
+        snakeMoveRotList.Insert(0, transform.rotation);
+        gridPosition += moveDirection;
+        
+        if (bodySegList.Count < snakeBodySize)
+        {
+            bodySegList.Insert(0, GameObject.Instantiate(BodySegment, new Vector3(snakeMovePositionList[0].x + .5f, snakeMovePositionList[0].y + .5f, 0), snakeMoveRotList[0]));
+            if (bodySegList.Count == 1)
             {
-                bodySegList.Insert(0,GameObject.Instantiate(bodySegment, new Vector3(snakeMovePositionList[0].x + .5f, snakeMovePositionList[0].y + .5f, 0), snakeMoveRotList[0]));
-                if(bodySegList.Count == 1)
-                {
-                    bodySegList[0].GetComponent<SpriteRenderer>().sprite = tailSPR;
-                }
+                bodySegList[0].GetComponent<SpriteRenderer>().sprite = TailSPR;
             }
-            if (snakeMovePositionList.Count >= snakeBodySize + 1)
-            {
-                snakeMovePositionList.RemoveAt(snakeMovePositionList.Count - 1);
-                snakeMoveRotList.RemoveAt(snakeMoveRotList.Count - 1);
-            }
-            for (int i = 0; i < bodySegList.Count; i++)
-            {
-                Vector2Int snakeMovePosition = snakeMovePositionList[i];
-                bodySegList[i].transform.position = new Vector3(snakeMovePosition.x+.5f,snakeMovePosition.y+.5f,0);
-                bodySegList[i].transform.rotation = snakeMoveRotList[i];
+        }
 
-            }
+        if (snakeMovePositionList.Count >= snakeBodySize + 1)
+        {
+            snakeMovePositionList.RemoveAt(snakeMovePositionList.Count - 1);
+            snakeMoveRotList.RemoveAt(snakeMoveRotList.Count - 1);
+        }
 
+        transform.position = new Vector3(gridPosition.x + .5f, gridPosition.y + .5f);
 
+        for (int i = 0; i < bodySegList.Count; i++)
+        {
+            Vector2Int snakeMovePosition = snakeMovePositionList[i];
+            bodySegList[i].transform.position = new Vector3(snakeMovePosition.x + .5f, snakeMovePosition.y + .5f, 0);
+            bodySegList[i].transform.rotation = snakeMoveRotList[i];
+        }
 
-                transform.position = new Vector3(gridPosition.x+.5f, gridPosition.y+.5f);
-                CanMove = true;
-            }
-
+        canMove = true;
     }
 
-    private void Control()
+    void Control()
     {
-
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && moveDirection.y == 0)
         {
-            if (MoveDirection.y != -1) 
-            {
-                MoveDirection.x = 0;
-                MoveDirection.y = 1;
-                transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, -90);
-                CanMove = false;
-            }
+            moveDirection.x = 0;
+            moveDirection.y = 1;
+            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, -90);
+            Debug.Log("Up");
+            canMove = false;
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+        else if ((Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) && moveDirection.y == 0)
         {
-            if (MoveDirection.y != 1)
-            {
-                MoveDirection.x = 0;
-                MoveDirection.y = -1;
-                transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 90);
-                CanMove = false;
-            }
+            moveDirection.x = 0;
+            moveDirection.y = -1;
+            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 90);
+            Debug.Log("Down");
+            canMove = false;
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D) )
+        else if ((Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) && moveDirection.x == 0)
         {
-            if (MoveDirection.x != -1)
-            {
-                MoveDirection.x = 1;
-                MoveDirection.y = 0;
-                transform.eulerAngles = new Vector3(0, -180, 0);
-                CanMove = false;
-            }
+            moveDirection.x = 1;
+            moveDirection.y = 0;
+            transform.eulerAngles = new Vector3(0, -180, 0);
+            Debug.Log("Right");
+            canMove = false;
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        else if ((Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) && moveDirection.x == 0)
         {
-            if (MoveDirection.x != 1)
-            {
-                MoveDirection.x = -1;
-                MoveDirection.y = 0;
-                transform.eulerAngles = new Vector3(0, 0, 0);
-                CanMove = false;
-            }
+            moveDirection.x = -1;
+            moveDirection.y = 0;
+            transform.eulerAngles = new Vector3(0, 0, 0);
+            Debug.Log("Left");
+            canMove = false;
         }
 
     }
 
-    private void SwipeTest()
+    void SwipeTest()
     {
-        if(Input.touchCount>0)
+        if(Input.touchCount<=0)
         {
-            Debug.Log("touched");
-            Touch touch = Input.GetTouch(0);
-            if(touch.phase == TouchPhase.Began)
-            {
-                swipeStartTime = Time.time;
-                startSwipePosition = touch.position;
-            }
-            else
-            {
-                swipeEndTime = Time.time;
-                endSwipePosition = touch.position;
-                swipeTime = swipeEndTime - swipeStartTime;
-                swipeLength = (endSwipePosition - startSwipePosition).magnitude;
-                if(swipeTime<maxSwipetime && swipeLength > minSwipeDistance)
-                {
-                    swipeControl();
-                }
-            }
+            return;
+        }
+        Debug.Log("touched");
+        Touch touch = Input.GetTouch(0);
+        if (touch.phase == TouchPhase.Began)
+        {
+            swipeStartTime = Time.time;
+            startSwipePosition = touch.position;
+            return;
+        }
+
+        swipeEndTime = Time.time;
+        endSwipePosition = touch.position;
+        swipeTime = swipeEndTime - swipeStartTime;
+        swipeLength = (endSwipePosition - startSwipePosition).magnitude;
+        if (swipeTime < MaxSwipetime && swipeLength > MinSwipeDistance)
+        {
+            swipeControl();
         }
     }
 
-    private void swipeControl()
+    void swipeControl()
     {
-        Vector2 Distance = endSwipePosition - startSwipePosition;
-        float xDistance =Mathf.Abs(Distance.x);
-        float yDistance =Mathf.Abs(Distance.y);
+        var distance = endSwipePosition - startSwipePosition;
+        var xDistance =Mathf.Abs(distance.x);
+        var yDistance =Mathf.Abs(distance.y);
+
         if (yDistance < xDistance)
         {
-            if (Distance.x > 0)
+            if (distance.x > 0 && moveDirection.x == 0)
             {
-                if (MoveDirection.x != -1)
-                {
-                    MoveDirection.x = 1;
-                    MoveDirection.y = 0;
-                    transform.eulerAngles = new Vector3(0, -180, 0);
-                    CanMove = false;
-                    Debug.Log("Right");
-                }
-            }
-            else if (Distance.x < 0)
-            {
-                if (MoveDirection.x != 1)
-                {
-                    MoveDirection.x = -1;
-                    MoveDirection.y = 0;
-                    transform.eulerAngles = new Vector3(0, 0, 0);
-                    CanMove = false;
-                    Debug.Log("Left");
-                }
+                moveDirection.x = 1;
+                moveDirection.y = 0;
+                transform.eulerAngles = new Vector3(0, -180, 0);
+                canMove = false;
+                Debug.Log("Right");
             }
 
+            else if (distance.x < 0 && moveDirection.x == 0)
+            {
+                moveDirection.x = -1;
+                moveDirection.y = 0;
+                transform.eulerAngles = new Vector3(0, 0, 0);
+                canMove = false;
+                Debug.Log("Left");
+            }
         }
         else if (yDistance > xDistance)
         {
-            if (Distance.y > 0)
+            if (distance.y > 0 && moveDirection.y == 0)
             {
-                if (MoveDirection.y != -1)
-                {
-                    MoveDirection.x = 0;
-                    MoveDirection.y = 1;
-                    transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, -90);
-                    CanMove = false;
-                    Debug.Log("Up");
-                }
+                moveDirection.x = 0;
+                moveDirection.y = 1;
+                transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, -90);
+                canMove = false;
+                Debug.Log("Up");
             } 
-            else if (Distance.y < 0)
+
+            else if (distance.y < 0 && moveDirection.y == 0)
             {
-                if (MoveDirection.y != 1)
-                {
-                    MoveDirection.x = 0;
-                    MoveDirection.y = -1;
-                    transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 90);
-                    CanMove = false;
-                    Debug.Log("Down");
-                }
-            }    
-
+                moveDirection.x = 0;
+                moveDirection.y = -1;
+                transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 90);
+                canMove = false;
+                Debug.Log("Down");
+            }
         }
-
-
     }
 }

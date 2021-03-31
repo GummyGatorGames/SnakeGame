@@ -4,26 +4,28 @@ using UnityEngine;
 
 public class BodyScript : MonoBehaviour
 {
-    private float MoveTimer;
-    private float MoveTimerMax;
+    float moveTimer;
+    float moveTimerMax;
+
     // Start is called before the first frame update
     void Start()
     {
-        MoveTimerMax = .2f;
-        MoveTimer = MoveTimerMax;
-
+        moveTimerMax = .2f;
+        moveTimer = moveTimerMax;
     }
 
     // Update is called once per frame
     void Update()
     {
-        MoveTimer += Time.deltaTime;
+        moveTimer += Time.deltaTime;
 
-        if (MoveTimer >= MoveTimerMax)
+        if (moveTimer < moveTimerMax)
         {
-            Debug.Log("Destroying");
-            MoveTimer -= MoveTimerMax;
-            Destroy(this);
+            return;
         }
+
+        Debug.Log("Destroying");
+        moveTimer -= moveTimerMax;
+        Destroy(this);
     }
 }

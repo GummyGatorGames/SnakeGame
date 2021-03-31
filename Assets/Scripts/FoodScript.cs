@@ -5,13 +5,14 @@ using UnityEngine;
 public class FoodScript : MonoBehaviour
 {
 
-    private void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Wall")
         {
             Debug.Log("Food in wall fixing");
             Destroy(this.gameObject);
         }
+
         if (other.tag == "Body")
         {
             Debug.Log("Food in body fixing");
