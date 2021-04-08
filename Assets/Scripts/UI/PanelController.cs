@@ -23,6 +23,7 @@ public class PanelController : MonoBehaviour
     public GameObject levelselectUI;
     public GameObject player;
     public GameObject scoreT;
+    string LoadedLevel;
 
     public void Awake()
     {
@@ -74,21 +75,17 @@ public class PanelController : MonoBehaviour
                 helpMenu.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 7000, 0);
                 levelselectUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 7000, 0);
                 mainMenu.GetComponent<RectTransform>().anchoredPosition = new Vector3(0,0,0);
-                Debug.Log("Back");
                 break;
             case 1:
-                Debug.Log("Play");
                 mainMenu.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 7000, 0);
                 levelselectUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
                 break;
             case 2:
-                Debug.Log("Help");
                 mainMenu.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 7000, 0);
                 creditsMenu.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 7000, 0);
                 helpMenu.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
                 break;
             case 3:
-                Debug.Log("Credits");
                 mainMenu.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 7000, 0);
                 helpMenu.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 7000, 0);
                 creditsMenu.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
@@ -107,32 +104,38 @@ public class PanelController : MonoBehaviour
                 }
                 break;
             case 5:
-                mainMenu.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 7000, 0);
-                levelselectUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 7000, 0);
-                inGameUI.SetActive(true);
-                inGameUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
-                inGame = true;
-                SceneManager.LoadScene("Level1");
+                ChangetoLevel("Level1");
                 break;
             case 6:
-                mainMenu.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 7000, 0);
-                levelselectUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 7000, 0);
-                inGameUI.SetActive(true);
-                inGame = true;
-                SceneManager.LoadScene("Level2");
+                ChangetoLevel("Level2");
                 break;
             case 7:
-                mainMenu.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 7000, 0);
-                levelselectUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 7000, 0);
-                inGameUI.SetActive(true);
-                inGame = true;
-                SceneManager.LoadScene("Level3");
+                ChangetoLevel("Level3");
                 break;
             case 8:
                 Debug.Log("Quit game");
                 Application.Quit();
                 break;
+            case 9:
+                Application.OpenURL("https://www.ronaldvarela.com/");
+                break;
             default:
                 break;
         }}
+
+    private void ChangetoLevel(string LevelChange)
+    {
+        inGameUI.SetActive(true);
+        inGame = true;
+        //this.GetComponent<Animator>().SetInteger. SetInteger.ChangeScene(1);
+        this.GetComponent<Animator>().SetInteger("ChangeScene", 1);
+        LoadedLevel = LevelChange;
+    }
+
+    void ChangeScene()
+    {
+        SceneManager.LoadScene(LoadedLevel);
+        levelselectUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 7000, 0);
+        this.GetComponent<Animator>().SetInteger("ChangeScene", 2);
+    }
 }
