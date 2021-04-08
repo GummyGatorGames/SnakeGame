@@ -104,20 +104,29 @@ public class PanelController : MonoBehaviour
                 }
                 break;
             case 5:
-                ChangetoLevel("Level1");
-                break;
-            case 6:
-                ChangetoLevel("Level2");
-                break;
-            case 7:
-                ChangetoLevel("Level3");
-                break;
-            case 8:
                 Debug.Log("Quit game");
                 Application.Quit();
                 break;
-            case 9:
+            case 6:
                 Application.OpenURL("https://www.ronaldvarela.com/");
+                break;
+            case 7:
+                ChangetoLevel("Level1");
+                break;
+            case 8:
+                ChangetoLevel("Level2");
+                break;
+            case 9:
+                ChangetoLevel("Level3");
+                break;
+            case 10:
+                ChangetoLevel("Level4");
+                break;
+            case 11:
+                ChangetoLevel("Level5");
+                break;
+            case 12:
+                ChangetoLevel("Level6");
                 break;
             default:
                 break;

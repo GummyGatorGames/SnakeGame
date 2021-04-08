@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 2160758880656922795}
   - component: {fileID: 8709296879665586059}
   - component: {fileID: 8228063275863122180}
+  - component: {fileID: 313816615}
+  - component: {fileID: 503859988}
   m_Layer: 0
   m_Name: SnakeHead
   m_TagString: Player
@@ -164,3 +166,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a7fe54ea76fbf44eb5686f9417625dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &313816615
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6621192292189539048}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b54027d62cd40f049bd936347ac25dfc, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &503859988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6621192292189539048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d954ade4130bfcd4f9b1e901ea7f8754, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Bite
+    clip: {fileID: 8300000, guid: 415588f9299ce1f40b0d3f004eff4fea, type: 3}
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+  - name: Bonk
+    clip: {fileID: 8300000, guid: e60dbe2187dad2a43bc014275855c18b, type: 3}
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+  - name: Dizzy
+    clip: {fileID: 8300000, guid: 398646acd97567548824a95599fd0732, type: 3}
+    volume: 0.346
+    pitch: 0.72
+    source: {fileID: 0}
