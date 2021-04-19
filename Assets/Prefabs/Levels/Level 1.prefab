@@ -6479,7 +6479,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   width: 20
-  height: 20
+  height: 40
   Objective: {fileID: 1067753352416997132, guid: f78e6ce28ad5c714b95fd4ff8fb7d6dc,
     type: 3}
 --- !u!1 &4586184535546136562

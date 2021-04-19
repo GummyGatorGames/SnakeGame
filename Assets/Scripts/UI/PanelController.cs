@@ -6,6 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Advertisements;
+using System;
 
 public class PanelController : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class PanelController : MonoBehaviour
     [System.Serializable]
     public class PlayerCollidedEvent : UnityEvent { }
 
-    Scene ThisScene;
+    string ThisScene;
     bool inGame;
     public GameObject mainMenu;
     public GameObject creditsMenu;
@@ -39,7 +40,7 @@ public class PanelController : MonoBehaviour
     {
         Advertisement.Initialize("4071807", true);
 
-        ThisScene = SceneManager.GetActiveScene();
+        ThisScene = SceneManager.GetActiveScene().name;
     }
 
     // Update is called once per frame
@@ -57,6 +58,7 @@ public class PanelController : MonoBehaviour
             if (!player.GetComponent<SnakeHeadScript>().isAlive)
             {
                 gameOverUi.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
+                SaveHighscore();
             }
 
 
@@ -79,6 +81,11 @@ public class PanelController : MonoBehaviour
             case 1:
                 mainMenu.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 7000, 0);
                 levelselectUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
+
+                LoadHighscores();
+
+
+
                 break;
             case 2:
                 mainMenu.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 7000, 0);
@@ -91,13 +98,14 @@ public class PanelController : MonoBehaviour
                 creditsMenu.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
                 break;
             case 4:
-                mainMenu.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
-                helpMenu.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 7000, 0);
-                creditsMenu.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 7000, 0);
+                LoadHighscores();
                 gameOverUi.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 7000, 0);
+                levelselectUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
                 inGameUI.SetActive(false);
                 inGame = false;
                 SceneManager.LoadScene("Start Screen Scene");
+
+                ThisScene = SceneManager.GetActiveScene().name;
                 if (Advertisement.IsReady())
                 {
                     Advertisement.Show();
@@ -132,6 +140,79 @@ public class PanelController : MonoBehaviour
                 break;
         }}
 
+    private void SaveHighscore()
+    {
+        Debug.Log("Saving: " + "Highscore" + SceneManager.GetActiveScene().name[5]);
+        if (player.GetComponent<SnakeHeadScript>().score > int.Parse(PlayerPrefs.GetString("Highscore"+ SceneManager.GetActiveScene().name[5])))
+        {
+            PlayerPrefs.SetString("Highscore" + SceneManager.GetActiveScene().name[5], player.GetComponent<SnakeHeadScript>().score.ToString());
+
+        }
+        PlayerPrefs.Save();
+    }
+    private void LoadHighscores()
+    {
+        if (PlayerPrefs.HasKey("Highscore1"))
+        {
+
+            levelselectUI.transform.Find("LevelOne").Find("Highscore1").GetComponent<Text>().text 
+                = PlayerPrefs.GetString("Highscore1");
+        } else
+        {
+            PlayerPrefs.SetString("Highscore1", "0");
+        }
+        if (PlayerPrefs.HasKey("Highscore2"))
+        {
+
+            levelselectUI.transform.Find("LevelTwo").Find("Highscore2").GetComponent<Text>().text
+                = PlayerPrefs.GetString("Highscore2");
+        }
+        else
+        {
+            PlayerPrefs.SetString("Highscore2", "0");
+        }
+        if (PlayerPrefs.HasKey("Highscore3"))
+        {
+
+            levelselectUI.transform.Find("LevelThree").Find("Highscore3").GetComponent<Text>().text
+                = PlayerPrefs.GetString("Highscore3");
+        }
+        else
+        {
+            PlayerPrefs.SetString("Highscore3", "0");
+        }
+        if (PlayerPrefs.HasKey("Highscore4"))
+        {
+
+            levelselectUI.transform.Find("LevelFour").Find("Highscore4").GetComponent<Text>().text
+                = PlayerPrefs.GetString("Highscore4");
+        }
+        else
+        {
+            PlayerPrefs.SetString("Highscore4", "0");
+        }
+        if (PlayerPrefs.HasKey("Highscore5"))
+        {
+
+            levelselectUI.transform.Find("LevelFive").Find("Highscore5").GetComponent<Text>().text
+                = PlayerPrefs.GetString("Highscore5");
+        }
+        else
+        {
+            PlayerPrefs.SetString("Highscore5", "0");
+        }
+        if (PlayerPrefs.HasKey("Highscore6"))
+        {
+
+            levelselectUI.transform.Find("LevelSix").Find("Highscore6").GetComponent<Text>().text
+                = PlayerPrefs.GetString("Highscore6");
+        }
+        else
+        {
+            PlayerPrefs.SetString("Highscore6", "0");
+        }
+    }
+
     private void ChangetoLevel(string LevelChange)
     {
         inGameUI.SetActive(true);
@@ -146,5 +227,7 @@ public class PanelController : MonoBehaviour
         SceneManager.LoadScene(LoadedLevel);
         levelselectUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 7000, 0);
         this.GetComponent<Animator>().SetInteger("ChangeScene", 2);
+
+        ThisScene = SceneManager.GetActiveScene().name;
     }
 }

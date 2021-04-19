@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2263850142898244094}
   - component: {fileID: 2263850142898244088}
   m_Layer: 0
-  m_Name: Level 1
+  m_Name: Level 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,7 +118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   width: 20
-  height: 20
+  height: 40
   Objective: {fileID: 1067753352416997132, guid: f78e6ce28ad5c714b95fd4ff8fb7d6dc,
     type: 3}
 --- !u!1 &3176816107821397211
