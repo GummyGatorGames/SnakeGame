@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3539686439713473355}
   - component: {fileID: 7472009148891510194}
   - component: {fileID: -138869299907235371}
+  - component: {fileID: 718827070}
   m_Layer: 0
   m_Name: Objective
   m_TagString: ObjectiveFood
@@ -49,6 +50,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -143,3 +145,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73dd1def431a5fb46af8d66d0b5da1cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &718827070
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1067753352416997132}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 894a1f72e1ce1f348a391cd154fc7b71, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

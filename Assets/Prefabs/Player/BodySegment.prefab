@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7059247309529168326}
   - component: {fileID: 1653756532246491355}
   - component: {fileID: 8565116953841615502}
+  - component: {fileID: -7773559228010131366}
   m_Layer: 0
   m_Name: BodySegment
   m_TagString: Body
@@ -122,3 +123,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a751f942891fc1843a7801beada9ec66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &-7773559228010131366
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4531366510515299317}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5784950da22690c4aa599e900c2b64fb, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
