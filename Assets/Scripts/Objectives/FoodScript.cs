@@ -18,6 +18,11 @@ public class FoodScript : MonoBehaviour
             Debug.Log("Food in body fixing");
             Destroy(this.gameObject);
         }
+        if (other.tag == "ObjectiveFood")
+        {
+            Debug.Log("Food in food");
+            Destroy(this.gameObject);
+        }
     }
 
 

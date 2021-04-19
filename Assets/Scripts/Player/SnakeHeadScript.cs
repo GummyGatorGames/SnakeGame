@@ -21,8 +21,12 @@ public class SnakeHeadScript : MonoBehaviour
     float swipeLength;
     Vector2 startSwipePosition;
     Vector2 endSwipePosition;
-    public int score = 0;
+    Animator HeadAnim;
+    AudioManager Audio;
+    bool vibrate = true;
 
+
+    public int score = 0;
     public float MaxSwipetime;
     public float MinSwipeDistance;
     public GameObject BodySegment;
@@ -34,30 +38,56 @@ public class SnakeHeadScript : MonoBehaviour
         if (other.tag == "Body" && isAlive)
         {
             isAlive = false;
-            Debug.Log($"GridPosi: {gridPosition}, MoveDirection: {moveDirection}");
+            Debug.Log(bodySegList.Count);
+            Destroy(bodySegList[0]);
+            bodySegList.RemoveAt(0);
+            Debug.Log(bodySegList.Count);
             gridPosition -= moveDirection;
             transform.position = new Vector3(gridPosition.x + .5f, gridPosition.y + .5f);
-            Debug.Log("Head has been bonked by body");
+            Audio.Play("Bonk");
+            HeadAnim.SetTrigger("Bonk");
+            if (vibrate)
+            {
+                Handheld.Vibrate();
+            }
         }
 
         if (other.tag == "ObjectiveFood")
         {
+            Audio.Play("Bite");
+            HeadAnim.SetTrigger("Bite");
             Destroy(other.gameObject);
             score++;
             snakeBodySize++;
             Debug.Log("Score is: " + score);
+            if (vibrate)
+            {
+                Handheld.Vibrate();
+            }
         }
 
         if (other.tag == "Wall" && isAlive)
         {
             isAlive = false;
-            Debug.Log($"GridPosi: {gridPosition}, MoveDirection: {moveDirection}");
+            Debug.Log(bodySegList.Count);
+            Destroy(bodySegList[0]);
+            bodySegList.RemoveAt(0);
+            Debug.Log(bodySegList.Count);
             gridPosition -= moveDirection;
             transform.position = new Vector3(gridPosition.x + .5f, gridPosition.y + .5f);
-            Debug.Log("Head has been bonked by a wall");
+            Audio.Play("Bonk");
+            HeadAnim.SetTrigger("Bonk");
+            if (vibrate)
+            {
+                Handheld.Vibrate();
+            }
         }
     }
     
+    void DizzySound()
+    {
+        Audio.Play("Dizzy");
+    }
     // Start is called before the first frame update
     void Awake()
     {
@@ -69,6 +99,9 @@ public class SnakeHeadScript : MonoBehaviour
         moveTimerMax = .2f;
         moveTimer = moveTimerMax;
         moveDirection = new Vector2Int(-1, 0);
+        HeadAnim = this.GetComponent<Animator>();
+        Audio = this.GetComponent<AudioManager>();
+        Audio.sounds[2].source.loop = true;
     }
 
     // Update is called once per frame
@@ -105,9 +138,10 @@ public class SnakeHeadScript : MonoBehaviour
         if (bodySegList.Count < snakeBodySize)
         {
             bodySegList.Insert(0, GameObject.Instantiate(BodySegment, new Vector3(snakeMovePositionList[0].x + .5f, snakeMovePositionList[0].y + .5f, 0), snakeMoveRotList[0]));
+            
             if (bodySegList.Count == 1)
             {
-                bodySegList[0].GetComponent<SpriteRenderer>().sprite = TailSPR;
+                bodySegList[0].GetComponent<Animator>().SetBool("Tail", true);
             }
         }
 
@@ -162,6 +196,9 @@ public class SnakeHeadScript : MonoBehaviour
             transform.eulerAngles = new Vector3(0, 0, 0);
             Debug.Log("Left");
             canMove = false;
+        }
+        else if ((Input.GetKeyDown(KeyCode.T))){
+            snakeBodySize += 100;
         }
 
     }
